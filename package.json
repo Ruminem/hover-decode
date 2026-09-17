@@ -1,9 +1,9 @@
 {
   "name": "hover-decode",
   "displayName": "Hover Decode",
-  "description": "Hover over epoch timestamps, hex, base64, or your own dictionary terms to see what they mean.",
+  "description": "Hover over Windows error codes, epoch timestamps, dates, sizes, durations, hex, base64, HTTP status codes, or your own and your team's dictionary terms to see what they mean.",
   "icon": "icon.png",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "Ruminem",
   "license": "Apache-2.0",
   "repository": {
@@ -20,7 +20,7 @@
     "hex",
     "base64",
     "http status"
-  ],
+  , "hresult", "windows error", "terminal"],
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -34,6 +34,10 @@
       {
         "command": "hoverDecode.openDictionary",
         "title": "%command.openDictionary%"
+      },
+      {
+        "command": "hoverDecode.openTeamDictionary",
+        "title": "%command.openTeamDictionary%"
       },
       {
         "command": "hoverDecode.resetDictionary",

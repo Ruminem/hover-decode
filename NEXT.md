@@ -1,3 +1,3 @@
-- 여기까지 됨: v0.1.0 을 VS Code 마켓(Ruminem.hover-decode)과 GitHub 릴리스에 게시, 프로필 README 에 추가
-- 다음 할 것: 쓰다가 새 오탐이나 놓친 값이 보이면 test.js 에 추가, 터미널용 링크 hover 는 원하면 추가
+- 여기까지 됨: 0.2.0 — Windows 에러 코드(이름·Win32 코드·Windows 메시지), 터미널 링크 hover, 팀 사전(.hover-decode.json), 크기·기간·ISO 날짜·µs/ns epoch 추가. 테스트 통과, 아직 VS Code 에서 눈으로는 안 봄
+- 다음 할 것: vsix 설치해 편집기·터미널에서 확인한 뒤 v0.2.0 태그 푸시로 게시
 - 막힌 것: 없음. 회사 PC 에 마켓 확장 설치가 허용되는지 확인 필요

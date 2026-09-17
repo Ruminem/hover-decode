@@ -2,17 +2,30 @@
 
 **English** · [한국어](#korean)
 
-Hover over a value to see what it means — epoch timestamps, hex numbers, base64, HTTP
-status codes, or any term you put in your own dictionary.
+Hover over a value to see what it means — Windows error codes, epoch timestamps, dates,
+byte counts, durations, hex numbers, base64, HTTP status codes, or any term in your own or
+your team's dictionary.
 
-Works in editors and in the Output panel.
+Works in editors, in the Output panel and in the terminal.
 
 | Hovered text | Shows |
 |---|---|
-| `1758000000`, `1758000000000` (epoch seconds or milliseconds, 2001–2100) | UTC and local time |
+| `0x80070005`, `-2147024891`, `E_ACCESSDENIED` | the other forms, the name, the Win32 code, and **Windows' own message** in its display language (Windows only) |
+| `1758000000`, `1758000000000` (epoch s, ms, µs or ns, 2001–2100) | UTC and local time |
+| `2025-09-16T05:20:00Z`, `2025-09-16 14:20:00` | epoch seconds and milliseconds, UTC and local time (no zone means local) |
+| `1073741824` (1024 or more) | size, e.g. `1.00 GB` |
+| `205000` (1000 or more), `5000ms`, `1500us`, `7200s` | duration, e.g. `3m 25s` (plain numbers are read as milliseconds) |
 | `0x80004005` | decimal, and signed int32 when the top bit is set |
 | `aGVsbG8gd29ybGQh` (12+ chars that decode to ASCII or Korean/Chinese/Japanese text) | decoded text |
-| `404`, `E_FAIL`, or any key in your dictionary | its meaning |
+| `404`, or any key in your dictionary | its meaning |
+
+The Windows message is looked up once per code through PowerShell, so the first hover on a
+new code takes about a third of a second.
+
+## Terminal
+
+The terminal has no hover, so values there become links instead: point at one to see the
+same rows on a single line, and Ctrl+click it to pick a value and copy it.
 
 ## Dictionary
 
@@ -28,6 +41,17 @@ after asking. The defaults are in Korean when VS Code's display language is Kore
 English otherwise; the language is picked when the file is created or reset.
 
 The file lives outside any repository on purpose, so private terms never get committed.
+
+## Team dictionary
+
+Terms the whole team needs — in-house error codes, status values — go in
+`.hover-decode.json` at the root of the project, in the same format, and get committed
+with it. **Hover Decode: Open Team Dictionary** creates it in the first workspace folder
+and opens it.
+
+Its entries show with the label `team`. When your own dictionary has the same key, yours
+wins. The team's entries beat the built-in defaults as long as you have not created your
+own dictionary file yet.
 
 ## Install
 
@@ -58,17 +82,29 @@ Apache-2.0
 
 [English](#hover-decode) · **한국어**
 
-값 위에 마우스를 올리면 그게 무슨 뜻인지 보여 줌 — epoch 타임스탬프, 16진수, base64, HTTP
-상태 코드, 그리고 내 사전에 넣어 둔 용어까지.
+값 위에 마우스를 올리면 그게 무슨 뜻인지 보여 줌 — Windows 에러 코드, epoch 타임스탬프, 날짜,
+바이트 수, 기간, 16진수, base64, HTTP 상태 코드, 그리고 내 사전이나 팀 사전에 넣어 둔 용어까지.
 
-편집기와 출력 패널에서 동작함.
+편집기, 출력 패널, 터미널에서 동작함.
 
 | 마우스를 올린 글자 | 보여 주는 것 |
 |---|---|
-| `1758000000`, `1758000000000` (초 또는 밀리초 epoch, 2001–2100년) | UTC와 로컬 시각 |
+| `0x80070005`, `-2147024891`, `E_ACCESSDENIED` | 다른 표기, 이름, Win32 코드, 그리고 **Windows가 가진 메시지**를 Windows 화면 언어로 (Windows에서만) |
+| `1758000000`, `1758000000000` (초·밀리초·마이크로초·나노초 epoch, 2001–2100년) | UTC와 로컬 시각 |
+| `2025-09-16T05:20:00Z`, `2025-09-16 14:20:00` | epoch 초와 밀리초, UTC와 로컬 시각 (시간대가 없으면 로컬로 봄) |
+| `1073741824` (1024 이상) | 크기, 예: `1.00 GB` |
+| `205000` (1000 이상), `5000ms`, `1500us`, `7200s` | 기간, 예: `3m 25s` (단위 없는 숫자는 밀리초로 봄) |
 | `0x80004005` | 10진수, 최상위 비트가 켜져 있으면 부호 있는 int32 값도 |
 | `aGVsbG8gd29ybGQh` (12자 이상, 풀면 ASCII나 한중일 문자가 되는 것) | 풀린 글자 |
-| `404`, `E_FAIL`, 또는 사전에 넣은 아무 키 | 그 뜻 |
+| `404`, 또는 사전에 넣은 아무 키 | 그 뜻 |
+
+Windows 메시지는 코드마다 한 번 PowerShell로 받아 옴. 그래서 처음 보는 코드에 올린 첫 hover는
+0.3초쯤 걸림.
+
+### 터미널
+
+터미널에는 hover가 없어서 대신 값을 링크로 만듦. 마우스를 올리면 같은 내용이 한 줄로 뜨고,
+Ctrl+클릭하면 값을 골라 복사할 수 있음.
 
 ### 사전
 
@@ -83,6 +119,15 @@ Apache-2.0
 초기화할 때 정해짐.
 
 파일을 일부러 저장소 밖에 둠. 사적인 용어가 커밋에 섞여 들어갈 일이 없음.
+
+### 팀 사전
+
+사내 에러 코드나 상태값처럼 팀 전체가 알아야 하는 용어는 프로젝트 최상위의
+`.hover-decode.json`에 같은 형식으로 넣고 같이 커밋함. **Hover Decode: 팀 사전 열기**를
+실행하면 첫 번째 작업 폴더에 파일을 만들고 열어 줌.
+
+팀 사전 항목은 `team` 라벨로 뜸. 내 사전에 같은 키가 있으면 내 것이 이김. 내 사전 파일을
+아직 만들지 않았다면 팀 사전이 기본 사전보다 앞섬.
 
 ### 설치
 
