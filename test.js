@@ -19,6 +19,11 @@ assert.strictEqual(get('7ZWc6riA7YWM7Iqk7Yq4').base64, '한글테스트');
 assert.strictEqual(get('getUserNameById').base64, undefined);
 assert.strictEqual(get('addEventListener').base64, undefined);
 assert.strictEqual(get('123456789012345').base64, undefined);
+// Real words from source trees that decoded to valid-but-junk UTF-8.
+for (const w of ['Semantically', 'deactivation', 'ReadmeCritic', 'Instantiates',
+  'direttamente', 'Typmetadaten', 'emplacements', 'finalization']) {
+  assert.strictEqual(get(w).base64, undefined, w);
+}
 
 assert.strictEqual(get('E_FAIL', { E_FAIL: 'Unspecified failure' }).dict, 'Unspecified failure');
 assert.strictEqual(get('toString', {}).dict, undefined); // no prototype leak
