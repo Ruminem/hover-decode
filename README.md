@@ -14,6 +14,10 @@ Hover over a value to see what it means.
 Run **Hover Decode: Open Dictionary**. It opens `~/.hover-decode/dict.json`, a flat
 `{ "term": "meaning" }` object. Changes apply on the next hover.
 
+It starts as a copy of the built-in defaults (HTTP status codes such as `404`), which you can
+edit or extend freely. **Hover Decode: Reset Dictionary to Default** overwrites it with the
+defaults again.
+
 The file lives outside any repository on purpose, so private terms never get committed.
 
 ## Build

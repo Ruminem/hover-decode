@@ -1,3 +1,3 @@
-- 여기까지 됨: 설치한 vsix 에서 epoch·hex·base64·사전 hover 네 가지 모두 뜨는 것 확인, base64 오탐 8건은 테스트로 막음
-- 다음 할 것: 평소에 쓰다가 새 오탐이나 놓친 값이 보이면 test.js 에 추가
+- 여기까지 됨: HTTP 상태 코드 기본 사전(default-dict.json) 추가, 사전 파일이 없으면 기본값 사용, "Reset Dictionary to Default" 명령 추가. 출력 패널에서도 hover 가 뜨는 것 확인
+- 다음 할 것: 새 vsix 설치 후 초기화 명령과 404 hover 를 눈으로 확인, 터미널용 링크 hover 는 원하면 추가
 - 막힌 것: 없음. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요

@@ -17,6 +17,10 @@
       {
         "command": "hoverDecode.openDictionary",
         "title": "Hover Decode: Open Dictionary"
+      },
+      {
+        "command": "hoverDecode.resetDictionary",
+        "title": "Hover Decode: Reset Dictionary to Default"
       }
     ]
   },

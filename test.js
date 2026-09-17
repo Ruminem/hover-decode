@@ -28,4 +28,8 @@ for (const w of ['Semantically', 'deactivation', 'ReadmeCritic', 'Instantiates',
 assert.strictEqual(get('E_FAIL', { E_FAIL: 'Unspecified failure' }).dict, 'Unspecified failure');
 assert.strictEqual(get('toString', {}).dict, undefined); // no prototype leak
 
+const defaults = require('./default-dict.json');
+assert.strictEqual(get('404', defaults).dict, 'HTTP Not Found');
+assert.ok(Object.values(defaults).every((v) => typeof v === 'string'));
+
 console.log('ok');
