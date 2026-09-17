@@ -8,7 +8,8 @@ const { decode } = require('./decode');
 
 // Outside any repo on purpose: dictionary entries may be private.
 const DICT_PATH = path.join(os.homedir(), '.hover-decode', 'dict.json');
-const DEFAULT_PATH = path.join(__dirname, 'default-dict.json');
+// Display language is fixed for the window's lifetime; changing it restarts VS Code.
+const DEFAULT_PATH = path.join(__dirname, vscode.env.language.startsWith('ko') ? 'default-dict.ko.json' : 'default-dict.json');
 const WORD = /0x[0-9a-fA-F]+|[A-Za-z0-9+/_-]+=*/;
 
 /** @returns {Record<string, unknown>} */

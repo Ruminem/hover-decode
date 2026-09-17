@@ -28,8 +28,11 @@ for (const w of ['Semantically', 'deactivation', 'ReadmeCritic', 'Instantiates',
 assert.strictEqual(get('E_FAIL', { E_FAIL: 'Unspecified failure' }).dict, 'Unspecified failure');
 assert.strictEqual(get('toString', {}).dict, undefined); // no prototype leak
 
-const defaults = require('./default-dict.json');
-assert.strictEqual(get('404', defaults).dict, 'HTTP 404 Not Found — 요청한 주소에 리소스가 없음, URL 오타이거나 삭제됐거나 경로가 바뀐 경우');
-assert.ok(Object.values(defaults).every((v) => typeof v === 'string'));
+const en = require('./default-dict.json');
+const ko = require('./default-dict.ko.json');
+assert.ok(get('404', en).dict.startsWith('HTTP 404 Not Found — nothing'));
+assert.ok(get('404', ko).dict.startsWith('HTTP 404 Not Found — 요청한'));
+assert.deepStrictEqual(Object.keys(ko), Object.keys(en)); // translations stay in sync
+assert.ok([...Object.values(en), ...Object.values(ko)].every((v) => typeof v === 'string'));
 
 console.log('ok');

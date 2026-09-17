@@ -16,7 +16,8 @@ Run **Hover Decode: Open Dictionary**. It opens `~/.hover-decode/dict.json`, a f
 
 It starts as a copy of the built-in defaults (HTTP status codes such as `404`), which you can
 edit or extend freely. **Hover Decode: Reset Dictionary to Default** overwrites it with the
-defaults again.
+defaults again. The defaults are in Korean when VS Code's display language is Korean, English
+otherwise; the language is picked when the file is created or reset.
 
 The file lives outside any repository on purpose, so private terms never get committed.
 
