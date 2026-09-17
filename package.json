@@ -2,9 +2,24 @@
   "name": "hover-decode",
   "displayName": "Hover Decode",
   "description": "Hover over epoch timestamps, hex, base64, or your own dictionary terms to see what they mean.",
-  "version": "0.0.1",
-  "publisher": "ruminem",
+  "version": "0.1.0",
+  "publisher": "Ruminem",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ruminem/hover-decode.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "hover",
+    "epoch",
+    "timestamp",
+    "hex",
+    "base64",
+    "http status"
+  ],
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -27,6 +42,6 @@
   },
   "scripts": {
     "test": "node test.js",
-    "package": "npx --yes @vscode/vsce package --allow-missing-repository"
+    "package": "npx --yes @vscode/vsce@3 package"
   }
 }

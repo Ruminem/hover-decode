@@ -2,3 +2,4 @@ test.js
 NEXT.md
 *.vsix
 .gitignore
+.github/

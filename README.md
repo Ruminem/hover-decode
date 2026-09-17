@@ -26,7 +26,7 @@ The file lives outside any repository on purpose, so private terms never get com
 ```sh
 npm test
 npm run package   # produces hover-decode-<version>.vsix
-code --install-extension hover-decode-0.0.1.vsix
+code --install-extension hover-decode-<version>.vsix
 ```
 
 ## License

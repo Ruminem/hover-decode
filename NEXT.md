@@ -1,3 +1,3 @@
-- 여기까지 됨: 명령 이름(package.nls)과 초기화 확인 창(vscode.l10n)도 한국어/영어로 나뉨, 기본 사전도 화면 언어로 고름
-- 다음 할 것: 새 vsix 설치 후 영어·한국어 화면에서 명령 이름·확인 창·사전 설명 확인, 터미널용 링크 hover 는 원하면 추가
-- 막힌 것: 없음. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요
+- 여기까지 됨: 마켓 게시 준비 — publisher Ruminem, 버전 0.1.0, repository 필드, 태그로 도는 release.yml·marketplace.yml (vscode-neon-glow 방식)
+- 다음 할 것: GitHub 저장소에 VSCE_PAT 시크릿을 넣고 v0.1.0 태그를 푸시해 게시, 마켓 페이지에서 설치 확인
+- 막힌 것: VSCE_PAT 는 값을 복사할 수 없어 직접 넣어야 함. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요

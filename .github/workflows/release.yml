@@ -1,0 +1,65 @@
+name: Release
+
+# Tag a commit to cut a release:
+#   git tag v0.1.0 && git push origin v0.1.0
+# marketplace.yml publishes the same tag to the Marketplace.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  vsix:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: the changelog is built from the commits since the previous tag.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Check the tag against package.json
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p 'require("./package.json").version')"
+          if [ "$tag" != "$pkg" ]; then
+            echo "tag is $tag but package.json says $pkg" >&2
+            exit 1
+          fi
+
+      - name: Test
+        run: node test.js
+
+      # vsce is held at major 3, the same as marketplace.yml - see the note there.
+      - name: Package
+        run: npx --yes @vscode/vsce@3 package --out "hover-decode-${GITHUB_REF_NAME#v}.vsix"
+
+      # From commits rather than pull requests: everything goes straight to main,
+      # so --generate-notes alone would produce a compare link and nothing else.
+      - name: Write the release notes
+        run: |
+          prev="$(git describe --tags --abbrev=0 "$GITHUB_REF_NAME^" 2>/dev/null || true)"
+          if [ -n "$prev" ]; then
+            echo "## Changes since $prev" > notes.md
+          else
+            echo "## Changes" > notes.md
+            prev="$(git rev-list --max-parents=0 HEAD | tail -1)"
+          fi
+          echo "" >> notes.md
+          git log --no-merges --format='- %s' "$prev..$GITHUB_REF_NAME" >> notes.md
+          cat notes.md
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file notes.md \
+            "hover-decode-${GITHUB_REF_NAME#v}.vsix"
