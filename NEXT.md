@@ -1,3 +1,3 @@
-- 여기까지 됨: base64 오탐 8건을 테스트에 넣고 ASCII·한중일 문자만 허용하도록 수정, vsix 를 VS Code 에 설치해 epoch·hex hover 가 뜨는 것 확인
-- 다음 할 것: base64 와 사전 hover 도 실제 파일에서 확인, 쓰면서 새 오탐이 보이면 test.js 에 추가
+- 여기까지 됨: 설치한 vsix 에서 epoch·hex·base64·사전 hover 네 가지 모두 뜨는 것 확인, base64 오탐 8건은 테스트로 막음
+- 다음 할 것: 평소에 쓰다가 새 오탐이나 놓친 값이 보이면 test.js 에 추가
 - 막힌 것: 없음. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요
