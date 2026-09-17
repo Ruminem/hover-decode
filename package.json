@@ -2,6 +2,7 @@
   "name": "hover-decode",
   "displayName": "Hover Decode",
   "description": "Hover over epoch timestamps, hex, base64, or your own dictionary terms to see what they mean.",
+  "icon": "icon.png",
   "version": "0.1.0",
   "publisher": "Ruminem",
   "license": "Apache-2.0",
@@ -42,6 +43,7 @@
   },
   "scripts": {
     "test": "node test.js",
-    "package": "npx --yes @vscode/vsce@3 package"
+    "package": "npx --yes @vscode/vsce@3 package",
+    "icon": "node tools/make-icon.js"
   }
 }

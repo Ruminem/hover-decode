@@ -3,3 +3,4 @@ NEXT.md
 *.vsix
 .gitignore
 .github/
+tools/
