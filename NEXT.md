@@ -1,0 +1,3 @@
+- 여기까지 됨: epoch/hex/base64/사전 hover 변환 구현, `npm test` 통과, `npm run package` 로 vsix 생성 확인
+- 다음 할 것: vsix 를 실제 VS Code 에 설치해 hover 가 뜨는지 확인하고, 오탐(base64 로 잘못 잡히는 단어)을 모아 테스트에 추가
+- 막힌 것: 없음. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요

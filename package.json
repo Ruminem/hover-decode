@@ -1,0 +1,27 @@
+{
+  "name": "hover-decode",
+  "displayName": "Hover Decode",
+  "description": "Hover over epoch timestamps, hex, base64, or your own dictionary terms to see what they mean.",
+  "version": "0.0.1",
+  "publisher": "ruminem",
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "hoverDecode.openDictionary",
+        "title": "Hover Decode: Open Dictionary"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node test.js",
+    "package": "npx --yes @vscode/vsce package --allow-missing-repository"
+  }
+}
