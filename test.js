@@ -29,7 +29,7 @@ assert.strictEqual(get('E_FAIL', { E_FAIL: 'Unspecified failure' }).dict, 'Unspe
 assert.strictEqual(get('toString', {}).dict, undefined); // no prototype leak
 
 const defaults = require('./default-dict.json');
-assert.strictEqual(get('404', defaults).dict, 'HTTP Not Found');
+assert.strictEqual(get('404', defaults).dict, 'HTTP 404 Not Found — 요청한 주소에 리소스가 없음, URL 오타이거나 삭제됐거나 경로가 바뀐 경우');
 assert.ok(Object.values(defaults).every((v) => typeof v === 'string'));
 
 console.log('ok');
