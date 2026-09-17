@@ -1,3 +1,3 @@
-- 여기까지 됨: base64 오탐 8건(C:\dev, _oss, VS Code 내장 확장 약 3천 파일에서 수집)을 테스트에 넣고, 디코딩 결과를 ASCII·한중일 문자만 허용하도록 바꿔 재스캔 오탐 0건
-- 다음 할 것: vsix 를 실제 VS Code 에 설치해 hover 가 뜨는지 눈으로 확인 (`code --install-extension hover-decode-0.0.1.vsix`)
+- 여기까지 됨: base64 오탐 8건을 테스트에 넣고 ASCII·한중일 문자만 허용하도록 수정, vsix 를 VS Code 에 설치해 epoch·hex hover 가 뜨는 것 확인
+- 다음 할 것: base64 와 사전 hover 도 실제 파일에서 확인, 쓰면서 새 오탐이 보이면 test.js 에 추가
 - 막힌 것: 없음. 회사 PC 에 vsix 수동 설치가 허용되는지 확인 필요

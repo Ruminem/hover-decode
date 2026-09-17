@@ -6,7 +6,7 @@ Hover over a value to see what it means.
 |---|---|
 | `1758000000`, `1758000000000` (epoch s/ms, 2001–2100) | UTC and local time |
 | `0x80004005` | decimal, and signed int32 when the top bit is set |
-| `aGVsbG8gd29ybGQh` (12+ chars, decodes to readable UTF-8) | decoded text |
+| `aGVsbG8gd29ybGQh` (12+ chars, decodes to ASCII or Korean/Chinese/Japanese text) | decoded text |
 | any key in your dictionary | its value |
 
 ## Dictionary
