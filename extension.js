@@ -51,12 +51,13 @@ function activate(context) {
       await vscode.window.showTextDocument(vscode.Uri.file(DICT_PATH));
     }),
     vscode.commands.registerCommand('hoverDecode.resetDictionary', async () => {
+      const reset = vscode.l10n.t('Reset');
       const ok = await vscode.window.showWarningMessage(
-        'Replace your dictionary with the default one? Custom entries will be lost.',
+        vscode.l10n.t('Replace your dictionary with the default one? Custom entries will be lost.'),
         { modal: true },
-        'Reset'
+        reset
       );
-      if (ok !== 'Reset') return;
+      if (ok !== reset) return;
       resetDict();
       await vscode.window.showTextDocument(vscode.Uri.file(DICT_PATH));
     })

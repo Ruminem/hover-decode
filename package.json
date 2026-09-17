@@ -9,6 +9,7 @@
     "vscode": "^1.80.0"
   },
   "main": "./extension.js",
+  "l10n": "./l10n",
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -16,11 +17,11 @@
     "commands": [
       {
         "command": "hoverDecode.openDictionary",
-        "title": "Hover Decode: Open Dictionary"
+        "title": "%command.openDictionary%"
       },
       {
         "command": "hoverDecode.resetDictionary",
-        "title": "Hover Decode: Reset Dictionary to Default"
+        "title": "%command.resetDictionary%"
       }
     ]
   },

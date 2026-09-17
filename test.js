@@ -35,4 +35,13 @@ assert.ok(get('404', ko).dict.startsWith('HTTP 404 Not Found — 요청한'));
 assert.deepStrictEqual(Object.keys(ko), Object.keys(en)); // translations stay in sync
 assert.ok([...Object.values(en), ...Object.values(ko)].every((v) => typeof v === 'string'));
 
+// Every UI string placeholder and l10n.t() call has a Korean translation.
+const fs = require('fs');
+const nls = require('./package.nls.json');
+const nlsKo = require('./package.nls.ko.json');
+const bundleKo = require('./l10n/bundle.l10n.ko.json');
+assert.deepStrictEqual(Object.keys(nlsKo), Object.keys(nls));
+for (const m of fs.readFileSync('package.json', 'utf8').matchAll(/"%([^%"]+)%"/g)) assert.ok(nls[m[1]], m[1]);
+for (const m of fs.readFileSync('extension.js', 'utf8').matchAll(/l10n\.t\('([^']+)'\)/g)) assert.ok(bundleKo[m[1]], m[1]);
+
 console.log('ok');
