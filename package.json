@@ -19,8 +19,11 @@
     "timestamp",
     "hex",
     "base64",
-    "http status"
-  , "hresult", "windows error", "terminal"],
+    "http status",
+    "hresult",
+    "windows error",
+    "terminal"
+  ],
   "engines": {
     "vscode": "^1.80.0"
   },
