@@ -5,8 +5,21 @@
 const MIN_MS = Date.UTC(2001, 0, 1);
 const MAX_MS = Date.UTC(2100, 0, 1);
 
-// ISO date-times first so their digits and dashes are not split into shorter words.
-const WORD = /\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?|0x[0-9a-fA-F]+|[A-Za-z0-9+/_-]+=*/;
+const UNIT_MS = { ns: 1e-6, us: 1e-3, 'µs': 1e-3, ms: 1, s: 1000, sec: 1000, m: 60000, min: 60000, h: 3600000, d: 86400000 };
+// Longest first, so `ms` is not read as `m`. A unit glued to a word (`3dparty`) or a piece of a
+// version (`1.2.3d`) is not a duration.
+const UNITS = 'ns|us|µs|ms|sec|min|s|m|h|d';
+const NUM = String.raw`\d+(?:\.\d+)?`;
+
+const DURATION = `(?<![.\w])${NUM}(?:${UNITS})(?:\\s+${NUM}(?:${UNITS}))*(?![A-Za-z0-9])`;
+
+// ISO date-times first so their digits and dashes are not split into shorter words; then runs of
+// unit values such as `3m 25s`, which the plain word pattern would split at the space.
+const WORD = new RegExp(
+  String.raw`\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?` +
+  `|${DURATION}` +
+  '|0x[0-9a-fA-F]+|[A-Za-z0-9+/_-]+=*'
+);
 
 // Well-known names only; the message itself comes from Windows (see winmsg.js).
 const ERROR_NAMES = {
@@ -83,15 +96,16 @@ function formatSize(n) {
 /** @param {number} ms */
 function formatDuration(ms) {
   if (ms < 1000) return `${+ms.toFixed(3)}ms`;
-  const d = Math.floor(ms / 86400000);
-  const h = Math.floor(ms / 3600000) % 24;
-  const m = Math.floor(ms / 60000) % 60;
-  const parts = [];
-  if (d) parts.push(`${d}d`);
-  if (d || h) parts.push(`${h}h`);
-  if (d || h || m) parts.push(`${m}m`);
-  parts.push(`${+((ms % 60000) / 1000).toFixed(3)}s`);
-  return parts.join(' ');
+  const parts = [
+    [Math.floor(ms / 86400000), 'd'],
+    [Math.floor(ms / 3600000) % 24, 'h'],
+    [Math.floor(ms / 60000) % 60, 'm'],
+    [+((ms % 60000) / 1000).toFixed(3), 's'],
+  ];
+  // A zero on either end says nothing; one in the middle keeps the bigger units readable.
+  while (parts.length > 1 && parts[0][0] === 0) parts.shift();
+  while (parts.length > 1 && parts[parts.length - 1][0] === 0) parts.pop();
+  return parts.map(([v, u]) => `${v}${u}`).join(' ');
 }
 
 /** @param {Date} d */
@@ -148,10 +162,14 @@ function decode(word, dicts) {
     }
   }
 
-  const unit = /^(\d+)(ns|us|µs|ms|s|sec)$/.exec(word);
-  if (unit) {
-    const scale = { ns: 1e-6, us: 1e-3, µs: 1e-3, ms: 1, s: 1000, sec: 1000 }[unit[2]];
-    out.push({ label: 'duration', value: formatDuration(Number(unit[1]) * scale) });
+  if (new RegExp(`^(?:${DURATION})$`).test(word)) {
+    let ms = 0;
+    for (const [, n, u] of word.matchAll(new RegExp(`(${NUM})(${UNITS})`, 'g'))) ms += Number(n) * UNIT_MS[u];
+    const human = formatDuration(ms);
+    // Whichever form the word already is, showing it back is noise.
+    if (human !== word) out.push({ label: 'duration', value: human });
+    const total = ms >= 1000 ? `${+(ms / 1000).toFixed(3)}s` : `${+ms.toFixed(3)}ms`;
+    if (total !== word && total !== human) out.push({ label: 'total', value: total });
   }
 
   if (/^\d{4}-\d{2}-\d{2}[T ]/.test(word)) {

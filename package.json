@@ -3,7 +3,7 @@
   "displayName": "Hover Decode",
   "description": "Hover over Windows error codes, epoch timestamps, dates, sizes, durations, hex, base64, HTTP status codes, POSIX errno names, or your own and your team's dictionary terms to see what they mean.",
   "icon": "icon.png",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "Ruminem",
   "license": "Apache-2.0",
   "repository": {

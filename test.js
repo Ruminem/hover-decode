@@ -63,7 +63,18 @@ assert.strictEqual(get('1758000000')['as ms'], undefined); // epoch
 assert.strictEqual(get('1024', { 1024: 'x' }).size, undefined); // dictionary term
 assert.strictEqual(get('5000ms').duration, '5s');
 assert.strictEqual(get('1500us').duration, '1.5ms');
-assert.strictEqual(get('7200s').duration, '2h 0m 0s');
+assert.strictEqual(get('7200s').duration, '2h'); // trailing zero parts are dropped
+assert.strictEqual(get('7200s').total, undefined); // the word already says it in seconds
+assert.strictEqual(get('5000ms').total, undefined); // same value as the duration row
+assert.strictEqual(get('2h').total, '7200s');
+assert.strictEqual(get('3m').total, '180s');
+assert.strictEqual(get('3m').duration, undefined); // the word is already the human form
+assert.strictEqual(get('1d').total, '86400s');
+
+// A run of unit values reads as one duration.
+assert.strictEqual(get('3m 25s').total, '205s');
+assert.strictEqual(get('1h 30m').total, '5400s');
+assert.strictEqual(get('3m 25s').duration, undefined);
 
 // ISO date-times, found whole inside a line.
 assert.strictEqual(get('2025-09-16T05:20:00Z').epoch, '1758000000');
@@ -71,6 +82,10 @@ assert.strictEqual(get('2025-09-16T14:20:00.5+09:00')['epoch ms'], '175800000050
 const words = (line) => [...line.matchAll(new RegExp(WORD.source, 'g'))].map((m) => m[0]);
 assert.deepStrictEqual(words('at 2025-09-16 05:20:00.123 done'), ['at', '2025-09-16 05:20:00.123', 'done']);
 assert.deepStrictEqual(words('hr=0x80070005, took 5000ms'), ['hr=', '0x80070005', 'took', '5000ms']);
+assert.deepStrictEqual(words('took 3m 25s to run'), ['took', '3m 25s', 'to', 'run']);
+assert.deepStrictEqual(words('3dparty 0x1000'), ['3dparty', '0x1000']); // a unit glued to a word is not one
+assert.deepStrictEqual(words('version 1.2.3d'), ['version', '1', '2', '3d']); // nor a piece of a version
+assert.strictEqual(get('100ms').duration, undefined); // the word already says it
 assert.ok(get('2025-09-16 05:20:00').epoch); // local time, so only check it parses
 
 // Plain Win32 error numbers, only when the text before them says it is an error code.

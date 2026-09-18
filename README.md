@@ -14,7 +14,7 @@ Works in editors, in the Output panel and in the terminal.
 | `1758000000`, `1758000000000` (epoch s, ms, µs or ns, 2001–2100) | UTC and local time |
 | `2025-09-16T05:20:00Z`, `2025-09-16 14:20:00` | epoch seconds and milliseconds, UTC and local time (no zone means local) |
 | `1073741824` (1024 or more) | size, e.g. `1.00 GB` |
-| `205000` (1000 or more), `5000ms`, `1500us`, `7200s` | duration, e.g. `3m 25s` (plain numbers are read as milliseconds) |
+| `205000` (1000 or more), `5000ms`, `7200s`, `3m 25s`, `1h 30m` | the duration, both ways: `7200s` shows `2h`, `3m 25s` shows `205s` (plain numbers are read as milliseconds; `ns`, `us`, `ms`, `s`, `m`, `h`, `d` are understood, and a run of them counts as one value) |
 | `0x80004005` | decimal, and signed int32 when the top bit is set |
 | `aGVsbG8gd29ybGQh` (12+ chars that decode to ASCII or Korean/Chinese/Japanese text) | decoded text |
 | `failed with error 1223`, `GetLastError() = 5` | Windows' own message for the bare number, when the words before it say it is an error code |
@@ -111,7 +111,7 @@ Apache-2.0
 | `1758000000`, `1758000000000` (초·밀리초·마이크로초·나노초 epoch, 2001–2100년) | UTC와 로컬 시각 |
 | `2025-09-16T05:20:00Z`, `2025-09-16 14:20:00` | epoch 초와 밀리초, UTC와 로컬 시각 (시간대가 없으면 로컬로 봄) |
 | `1073741824` (1024 이상) | 크기, 예: `1.00 GB` |
-| `205000` (1000 이상), `5000ms`, `1500us`, `7200s` | 기간, 예: `3m 25s` (단위 없는 숫자는 밀리초로 봄) |
+| `205000` (1000 이상), `5000ms`, `7200s`, `3m 25s`, `1h 30m` | 기간을 양쪽으로: `7200s` 는 `2h` 로, `3m 25s` 는 `205s` 로 (단위 없는 숫자는 밀리초로 봄. `ns`·`us`·`ms`·`s`·`m`·`h`·`d` 를 알아보고, 여러 개가 이어지면 한 값으로 셈) |
 | `0x80004005` | 10진수, 최상위 비트가 켜져 있으면 부호 있는 int32 값도 |
 | `aGVsbG8gd29ybGQh` (12자 이상, 풀면 ASCII나 한중일 문자가 되는 것) | 풀린 글자 |
 | `failed with error 1223`, `GetLastError() = 5` | 앞 글자가 에러 코드라고 말해 줄 때, 그 맨숫자에 대한 Windows 메시지 |
