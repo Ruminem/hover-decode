@@ -1,5 +1,11 @@
 {
   "command.openDictionary": "Hover Decode: 사전 열기",
   "command.resetDictionary": "Hover Decode: 사전을 기본값으로 초기화",
-  "command.openTeamDictionary": "Hover Decode: 팀 사전 열기"
+  "command.openTeamDictionary": "Hover Decode: 팀 사전 열기",
+  "command.decodeSelection": "Hover Decode: 선택 영역 디코드",
+  "config.hide": "hover 에서 뺄 행의 라벨. 예를 들어 `size`, `as ms`. 라벨은 각 행 왼쪽의 굵은 글씨임.",
+  "config.terminalLinks": "터미널에서 어떤 단어에 밑줄과 풀이를 붙일지 정함.",
+  "config.terminalLinks.strong": "뜻이 분명한 단어만: 에러 코드, 타임스탬프, 사전 항목, base64",
+  "config.terminalLinks.all": "hover 가 푸는 단어 전부. 크기·기간 추측도 포함",
+  "config.terminalLinks.off": "터미널에 밑줄을 붙이지 않음"
 }

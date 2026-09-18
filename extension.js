@@ -4,7 +4,7 @@ const vscode = require('vscode');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { decode, errorCode, WORD } = require('./decode');
+const { decode, errorCode, win32Code, hasStrong, WORD } = require('./decode');
 const { systemMessage } = require('./winmsg');
 
 // Outside any repo on purpose: dictionary entries may be private.
@@ -37,15 +37,20 @@ function loadDicts() {
     : [['team', team], ['dict', readJson(DEFAULT_PATH)]];
 }
 
-/** @param {string} word @param {[string, Record<string, unknown>][]} dicts */
-async function lookup(word, dicts) {
+/**
+ * @param {string} word
+ * @param {[string, Record<string, unknown>][]} dicts
+ * @param {string} before the text on the same line up to the word, for bare Win32 error numbers
+ */
+async function lookup(word, dicts, before = '') {
   const rows = decode(word, dicts);
-  const code = errorCode(word);
+  const code = errorCode(word) ?? win32Code(word, before);
   if (code !== null) {
     const msg = await systemMessage(code);
     if (msg) rows.push({ label: 'windows', value: msg });
   }
-  return rows;
+  const hide = vscode.workspace.getConfiguration('hoverDecode').get('hide', []);
+  return hide.length ? rows.filter((r) => !hide.includes(r.label)) : rows;
 }
 
 function resetDict() {
@@ -55,12 +60,14 @@ function resetDict() {
 
 /** @param {vscode.ExtensionContext} context */
 function activate(context) {
+  const channel = vscode.window.createOutputChannel('Hover Decode');
   context.subscriptions.push(
     vscode.languages.registerHoverProvider('*', {
       async provideHover(document, position) {
         const range = document.getWordRangeAtPosition(position, WORD);
         if (!range) return;
-        const rows = await lookup(document.getText(range), loadDicts());
+        const before = document.lineAt(range.start.line).text.slice(0, range.start.character);
+        const rows = await lookup(document.getText(range), loadDicts(), before);
         if (!rows.length) return;
         const md = new vscode.MarkdownString();
         for (const { label, value } of rows) {
@@ -74,11 +81,13 @@ function activate(context) {
     // Terminals have no hover API; a link's tooltip is the closest thing.
     vscode.window.registerTerminalLinkProvider({
       async provideTerminalLinks(context) {
+        const mode = vscode.workspace.getConfiguration('hoverDecode').get('terminalLinks', 'strong');
+        if (mode === 'off') return [];
         const dicts = loadDicts();
         const links = [];
         for (const m of context.line.matchAll(WORD_ALL)) {
-          const rows = await lookup(m[0], dicts);
-          if (!rows.length) continue;
+          const rows = await lookup(m[0], dicts, context.line.slice(0, m.index));
+          if (!rows.length || (mode === 'strong' && !hasStrong(rows))) continue;
           const tooltip = rows.map((r) => `${r.label}: ${r.value}`).join(' · ');
           links.push({ startIndex: m.index, length: m[0].length, tooltip, rows });
         }
@@ -91,6 +100,31 @@ function activate(context) {
         );
         if (pick) await vscode.env.clipboard.writeText(pick.label);
       },
+    }),
+    channel,
+    vscode.commands.registerCommand('hoverDecode.decodeSelection', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const selection = editor && !editor.selection.isEmpty && editor.document.getText(editor.selection);
+      if (!selection) {
+        vscode.window.showInformationMessage(vscode.l10n.t('Select the text to decode first.'));
+        return;
+      }
+      const dicts = loadDicts();
+      const seen = new Set();
+      channel.clear();
+      let found = 0;
+      for (const line of selection.split('\n')) {
+        for (const m of line.matchAll(WORD_ALL)) {
+          if (seen.has(m[0])) continue;
+          seen.add(m[0]);
+          const rows = await lookup(m[0], dicts, line.slice(0, m.index));
+          if (!rows.length) continue;
+          channel.appendLine(`${m[0]} → ${rows.map((r) => `${r.label}: ${r.value}`).join(' · ')}`);
+          found++;
+        }
+      }
+      if (found) channel.show(true);
+      else vscode.window.showInformationMessage(vscode.l10n.t('Nothing in the selection decodes to anything.'));
     }),
     vscode.commands.registerCommand('hoverDecode.openDictionary', async () => {
       if (!fs.existsSync(DICT_PATH)) resetDict();

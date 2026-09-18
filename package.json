@@ -1,9 +1,9 @@
 {
   "name": "hover-decode",
   "displayName": "Hover Decode",
-  "description": "Hover over Windows error codes, epoch timestamps, dates, sizes, durations, hex, base64, HTTP status codes, or your own and your team's dictionary terms to see what they mean.",
+  "description": "Hover over Windows error codes, epoch timestamps, dates, sizes, durations, hex, base64, HTTP status codes, POSIX errno names, or your own and your team's dictionary terms to see what they mean.",
   "icon": "icon.png",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "Ruminem",
   "license": "Apache-2.0",
   "repository": {
@@ -22,7 +22,8 @@
     "http status",
     "hresult",
     "windows error",
-    "terminal"
+    "terminal",
+    "errno"
   ],
   "engines": {
     "vscode": "^1.80.0"
@@ -35,6 +36,10 @@
   "contributes": {
     "commands": [
       {
+        "command": "hoverDecode.decodeSelection",
+        "title": "%command.decodeSelection%"
+      },
+      {
         "command": "hoverDecode.openDictionary",
         "title": "%command.openDictionary%"
       },
@@ -46,7 +51,35 @@
         "command": "hoverDecode.resetDictionary",
         "title": "%command.resetDictionary%"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Hover Decode",
+      "properties": {
+        "hoverDecode.hide": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "%config.hide%"
+        },
+        "hoverDecode.terminalLinks": {
+          "type": "string",
+          "enum": [
+            "strong",
+            "all",
+            "off"
+          ],
+          "default": "strong",
+          "enumDescriptions": [
+            "%config.terminalLinks.strong%",
+            "%config.terminalLinks.all%",
+            "%config.terminalLinks.off%"
+          ],
+          "description": "%config.terminalLinks%"
+        }
+      }
+    }
   },
   "scripts": {
     "test": "node test.js",

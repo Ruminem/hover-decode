@@ -2,5 +2,7 @@
   "Replace your dictionary with the default one? Custom entries will be lost.": "사전을 기본값으로 덮어쓸까요? 직접 추가하거나 고친 항목은 사라집니다.",
   "Reset": "초기화",
   "Pick a value to copy": "복사할 값을 고르세요",
-  "Open a folder first; the team dictionary lives in its root.": "먼저 폴더를 여세요. 팀 사전은 폴더 최상위에 만들어집니다."
+  "Open a folder first; the team dictionary lives in its root.": "먼저 폴더를 여세요. 팀 사전은 폴더 최상위에 만들어집니다.",
+  "Select the text to decode first.": "풀어 볼 텍스트를 먼저 선택하세요.",
+  "Nothing in the selection decodes to anything.": "선택한 곳에서 풀이할 만한 것을 찾지 못했습니다."
 }

@@ -17,7 +17,8 @@ Works in editors, in the Output panel and in the terminal.
 | `205000` (1000 or more), `5000ms`, `1500us`, `7200s` | duration, e.g. `3m 25s` (plain numbers are read as milliseconds) |
 | `0x80004005` | decimal, and signed int32 when the top bit is set |
 | `aGVsbG8gd29ybGQh` (12+ chars that decode to ASCII or Korean/Chinese/Japanese text) | decoded text |
-| `404`, or any key in your dictionary | its meaning |
+| `failed with error 1223`, `GetLastError() = 5` | Windows' own message for the bare number, when the words before it say it is an error code |
+| `404`, `ENOENT`, or any key in your dictionary | its meaning |
 
 The Windows message is looked up once per code through PowerShell, so the first hover on a
 new code takes about a third of a second.
@@ -27,13 +28,30 @@ new code takes about a third of a second.
 The terminal has no hover, so values there become links instead: point at one to see the
 same rows on a single line, and Ctrl+click it to pick a value and copy it.
 
+By default only words with a real meaning get a link — error codes, timestamps, dictionary
+terms, base64. Plain numbers, which would otherwise be underlined everywhere for a size or
+duration guess, are left alone. `hoverDecode.terminalLinks` switches this to `all` or `off`.
+
+## Decode a selection
+
+**Hover Decode: Decode Selection** takes everything you have selected, decodes every value
+in it, and writes one line per value to the Hover Decode output channel. Useful for a log
+chunk someone pasted at you.
+
+## Settings
+
+| Setting | Default | What it does |
+|---|---|---|
+| `hoverDecode.hide` | `[]` | Row labels to leave out, e.g. `["size", "as ms"]`. The label is the bold word on the left of each row. |
+| `hoverDecode.terminalLinks` | `strong` | Which terminal words get a link: `strong`, `all` or `off`. |
+
 ## Dictionary
 
 Run **Hover Decode: Open Dictionary**. It opens `~/.hover-decode/dict.json`, a flat
 `{ "term": "meaning" }` object. Changes apply on the next hover.
 
 It starts as a copy of the built-in defaults — HTTP status codes with what they mean and
-their usual causes — which you can edit or extend freely. If common numbers such as `200`
+their usual causes, plus POSIX `errno` names — which you can edit or extend freely. If common numbers such as `200`
 showing a hover gets in your way, delete those lines.
 
 **Hover Decode: Reset Dictionary to Default** overwrites the file with the defaults again,
@@ -96,7 +114,8 @@ Apache-2.0
 | `205000` (1000 이상), `5000ms`, `1500us`, `7200s` | 기간, 예: `3m 25s` (단위 없는 숫자는 밀리초로 봄) |
 | `0x80004005` | 10진수, 최상위 비트가 켜져 있으면 부호 있는 int32 값도 |
 | `aGVsbG8gd29ybGQh` (12자 이상, 풀면 ASCII나 한중일 문자가 되는 것) | 풀린 글자 |
-| `404`, 또는 사전에 넣은 아무 키 | 그 뜻 |
+| `failed with error 1223`, `GetLastError() = 5` | 앞 글자가 에러 코드라고 말해 줄 때, 그 맨숫자에 대한 Windows 메시지 |
+| `404`, `ENOENT`, 또는 사전에 넣은 아무 키 | 그 뜻 |
 
 Windows 메시지는 코드마다 한 번 PowerShell로 받아 옴. 그래서 처음 보는 코드에 올린 첫 hover는
 0.3초쯤 걸림.
@@ -106,13 +125,29 @@ Windows 메시지는 코드마다 한 번 PowerShell로 받아 옴. 그래서 �
 터미널에는 hover가 없어서 대신 값을 링크로 만듦. 마우스를 올리면 같은 내용이 한 줄로 뜨고,
 Ctrl+클릭하면 값을 골라 복사할 수 있음.
 
+기본값은 뜻이 분명한 단어에만 링크를 붙임 — 에러 코드, 타임스탬프, 사전 항목, base64. 크기나
+기간 추측 때문에 아무 데나 밑줄이 깔리던 맨숫자는 그냥 둠. `hoverDecode.terminalLinks` 로
+`all` 이나 `off` 로 바꿀 수 있음.
+
+### 선택 영역 디코드
+
+**Hover Decode: 선택 영역 디코드**는 선택해 둔 곳의 값을 전부 풀어서 Hover Decode 출력
+채널에 값마다 한 줄씩 적음. 누가 던져 준 로그 덩어리를 볼 때 쓸모 있음.
+
+### 설정
+
+| 설정 | 기본값 | 하는 일 |
+|---|---|---|
+| `hoverDecode.hide` | `[]` | 뺄 행의 라벨. 예: `["size", "as ms"]`. 라벨은 각 행 왼쪽의 굵은 글씨임. |
+| `hoverDecode.terminalLinks` | `strong` | 터미널에서 링크를 붙일 범위: `strong`, `all`, `off`. |
+
 ### 사전
 
 **Hover Decode: 사전 열기**를 실행하면 `~/.hover-decode/dict.json`이 열림. `{ "용어": "뜻" }`
 꼴의 평평한 객체임. 고치면 다음 hover부터 바로 반영됨.
 
-처음에는 기본 사전을 복사한 상태로 시작함. HTTP 상태 코드마다 뜻과 흔한 원인이 들어 있고,
-마음대로 고치거나 늘려도 됨. `200` 같은 흔한 숫자에 설명이 뜨는 게 거슬리면 그 줄을 지우면 됨.
+처음에는 기본 사전을 복사한 상태로 시작함. HTTP 상태 코드마다 뜻과 흔한 원인, 그리고 POSIX
+`errno` 이름이 들어 있고, 마음대로 고치거나 늘려도 됨. `200` 같은 흔한 숫자에 설명이 뜨는 게 거슬리면 그 줄을 지우면 됨.
 
 **Hover Decode: 사전을 기본값으로 초기화**는 한 번 물어본 뒤 파일을 기본값으로 덮어씀. VS Code
 화면 언어가 한국어면 한국어 기본 사전을, 그 밖에는 영어 기본 사전을 씀. 언어는 파일을 만들거나

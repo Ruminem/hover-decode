@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 'use strict';
 const assert = require('assert');
-const { decode, errorCode, WORD } = require('./decode');
+const { decode, errorCode, win32Code, hasStrong, WORD } = require('./decode');
 const { systemMessage } = require('./winmsg');
 
 const get = (word, dict = {}) => Object.fromEntries(decode(word, [['dict', dict]]).map((r) => [r.label, r.value]));
@@ -72,6 +72,22 @@ const words = (line) => [...line.matchAll(new RegExp(WORD.source, 'g'))].map((m)
 assert.deepStrictEqual(words('at 2025-09-16 05:20:00.123 done'), ['at', '2025-09-16 05:20:00.123', 'done']);
 assert.deepStrictEqual(words('hr=0x80070005, took 5000ms'), ['hr=', '0x80070005', 'took', '5000ms']);
 assert.ok(get('2025-09-16 05:20:00').epoch); // local time, so only check it parses
+
+// Plain Win32 error numbers, only when the text before them says it is an error code.
+assert.strictEqual(win32Code('1223', 'failed with error '), 1223);
+assert.strictEqual(win32Code('5', 'GetLastError() = '), 5);
+assert.strictEqual(win32Code('2', 'err='), 2);
+assert.strictEqual(win32Code('32', '에러 '), 32);
+assert.strictEqual(win32Code('1223', 'took '), null); // no prefix, just a number
+assert.strictEqual(win32Code('404', 'status '), null); // HTTP, not Win32
+assert.strictEqual(win32Code('0', 'error '), null); // success is not worth a popup
+assert.strictEqual(win32Code('99999', 'error '), null); // out of Win32 range
+
+// A word whose only rows are size/duration guesses does not deserve a terminal link.
+assert.strictEqual(hasStrong(decode('4096', [])), false);
+assert.strictEqual(hasStrong(decode('0x1000', [])), false);
+assert.strictEqual(hasStrong(decode('0x80070005', [])), true);
+assert.strictEqual(hasStrong(decode('1758000000', [])), true);
 
 const en = require('./default-dict.json');
 const ko = require('./default-dict.ko.json');

@@ -46,6 +46,29 @@ function errorCode(word) {
   return n >= 0x80000000 && n < 0xd0000000 ? n : null;
 }
 
+// Rows that only guess at a plain number; on their own they are not worth a terminal link.
+const WEAK = new Set(['size', 'as ms', 'dec', 'int32']);
+
+// What a log writes before a bare Win32 error number. Without one, `5` is just five.
+const ERROR_PREFIX = /(?:GetLastError\(\)|LastError|WinError|error|err|에러|오류)\s*[:=]?\s*$/i;
+
+/**
+ * The Win32 error number a bare decimal spells, if the text before it says it is one.
+ * @param {string} word
+ * @param {string} before the text on the same line up to the word
+ * @returns {number | null}
+ */
+function win32Code(word, before) {
+  if (!/^\d{1,5}$/.test(word) || !ERROR_PREFIX.test(before)) return null;
+  const n = Number(word);
+  return n > 0 && n <= 0xffff ? n : null;
+}
+
+/** @param {{label: string}[]} rows */
+function hasStrong(rows) {
+  return rows.some((r) => !WEAK.has(r.label));
+}
+
 /** @param {number} n */
 function formatSize(n) {
   const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
@@ -158,4 +181,4 @@ function decode(word, dicts) {
   return out;
 }
 
-module.exports = { decode, errorCode, WORD };
+module.exports = { decode, errorCode, win32Code, hasStrong, WORD };

@@ -1,5 +1,11 @@
 {
   "command.openDictionary": "Hover Decode: Open Dictionary",
   "command.resetDictionary": "Hover Decode: Reset Dictionary to Default",
-  "command.openTeamDictionary": "Hover Decode: Open Team Dictionary"
+  "command.openTeamDictionary": "Hover Decode: Open Team Dictionary",
+  "command.decodeSelection": "Hover Decode: Decode Selection",
+  "config.hide": "Row labels to leave out of the hover, such as `size` or `as ms`. The label is the bold word on the left of each row.",
+  "config.terminalLinks": "Which words in the terminal get an underline with a tooltip.",
+  "config.terminalLinks.strong": "Only words with a real meaning: error codes, timestamps, dictionary terms, base64",
+  "config.terminalLinks.all": "Every word the hover would decode, including size and duration guesses",
+  "config.terminalLinks.off": "No underlines in the terminal"
 }
