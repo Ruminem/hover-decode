@@ -1,3 +1,3 @@
 - 여기까지 됨: v0.3.1 마켓 게시 — hide 설정, terminalLinks(strong/all/off), 선택 영역 디코드 명령, 맨 Win32 에러 번호, POSIX errno 이름 47개, 기간 단위 m·h·d 와 `3m 25s` 초 합계
-- 다음 할 것: 업무에서 써 보고 strong 판정(decode.js 의 WEAK 집합)과 기간 오인식이 괜찮은지 보기
+- 다음 할 것: 업무에서 써 보기. strong 판정(decode.js 의 WEAK 집합)과 기간 오인식이 괜찮은지 보기
 - 막힌 것: 없음. 회사 PC 에 마켓 확장 설치가 허용되는지 확인 필요
